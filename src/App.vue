@@ -1,14 +1,9 @@
 <template>
   <div id="app">
-    <error-toast></error-toast>
     <div>
-      <router-view name="header" class="site-navigation"></router-view>/>
+      <router-view name="header" class="site-navigation" />
     </div>
-    <!-- <div id="sidebar" class="sidebar-navigation">
-      <router-view name="sidebar" />
-    </div> -->
     <router-view />
-    <router-view name="footer" />
   </div>
 </template>
 

@@ -39,26 +39,34 @@ const routes = [
     }
   },
   {
+    path: '/login',
+    name: 'user-login',
+    component: loadView('user-login'),
+    meta: {
+      title: '로그인'
+    }
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: loadView('user-register'),
+    meta: {
+      title: '회원가입'
+    }
+  },
+  {
+    path: '/reset-password',
+    name: 'reset-password',
+    component: loadView('user-reset-password'),
+    meta: {
+      title: '비밀번호 찾기 및 변경'
+    }
+  },
+  {
     path: '/user',
     name: 'user',
     components: parent('user'),
     children: [
-      {
-        path: 'login',
-        name: 'user-login',
-        component: loadView('user-login'),
-        meta: {
-          title: 'title.user.title'
-        }
-      },
-      {
-        path: 'register',
-        name: 'user-register',
-        component: loadView('user-register'),
-        meta: {
-          title: 'title.user.register'
-        }
-      },
       {
         path: 'agree',
         name: 'user-agree',

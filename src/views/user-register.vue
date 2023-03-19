@@ -1,191 +1,147 @@
 <template>
-  <div id="user-register" class="single-small-box bg-grey base-height">
-    <div class="container">
-      <div class="small-box">
-        <h2>User Register</h2>
-        <Form @submit="register" v-slot="formMeta">
-          <div class="form-elements">
-              <div class="row">
-                <div class="col col-6">
-                  <div class="input-title">
-                    {{ $t('attributes.userId') }}
-                    <span class="required">{{ $t('user.require') }}</span>
-                  </div>
-                  <div class="registration-input">
-                    <input-text
-                      v-model="userId"
-                      name="userId"
-                      v-model:inputFocus="userIdFocus"
-                     :rules="{ required: true, max: 20, regex: /^[a-z0-9+]{5,20}$/ }"
-                      error-msg-class="errors-msg"
-                    />
-                    <h6 class="error-if-exist" v-if="!userIdFocus.isUse">{{ $t("user.using_id") }}</h6>
-                  </div>
-                </div>
-                <div class="col col-6">
-                  <div class="input-title">
-                    {{ $t('attributes.email') }}
-                    <span class="required">{{ $t('user.require') }}</span>
-                  </div>
-                  <div class="registration-input">
-                    <input-text
-                      v-model="email"
-                      name="email"
-                      v-model:inputFocus="emailFocus"
-                      rules="required|email|max:100"
-                      error-msg-class="errors-msg"
-                    />
-                    <h6 class="error-if-exist" v-if="!emailFocus.isUse">{{ $t("user.using_email") }}</h6>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col col-6">
-                  <div class="input-title">
-                    {{ $t('attributes.name') }}
-                    <span class="required">{{ $t('user.require') }}</span>
-                    <input-text
-                      v-model="name"
-                      name="name"
-                      rules="required|max:20"
-                      error-msg-class="errors-msg"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col col-6">
-                  <div class="input-title">
-                    {{ $t('attributes.password') }}
-                    <span class="required">{{ $t('user.require') }}</span>
-                  </div>
-                  <input-text
-                    v-model="password"
-                    name="password"
-                    error-msg-class="errors-msg pre-line"
-                    :rules="{ required: true, max: 16, regex: /(?=.*\d{1,})(?=.*[~`!@#$%\^&*()-+=]{1,})(?=.*[a-z]{1,})(?=.*[A-Z]{1,}).{8,16}$/ }"
-                    type="password"
-                  ></input-text>
-                </div>
-                <div class="col col-6">
-                  <div class="input-title">
-                    {{ $t('attributes.password_confirmation') }}
-                    <span class="required">{{ $t('user.require') }}</span>
-                  </div>
-                  <input-text
-                    v-model="passwordConfirm"
-                    name="password_confirmation"
-                    error-msg-class="errors-msg pre-line"
-                    rules="required|confirmed:@password"
-                    type="password"
-                  ></input-text>
-                </div>
-              </div>
-              <div class="row btn-set">
-                <div class="col col-12">
-                  <button type="submit" class="btn gradient-btn" :disabled="!formMeta.meta.valid">{{ $t("user.enrollment") }}</button>
-                </div>
+  <div id="user-login">
+    <div
+      class="user__login__container"
+    >
+      <div class="form-wrapper">
+          <Form @submit="_signUp">
+            <div class="form-item">
+              <input-text
+                v-model="user.email"
+                name="email"
+                :label="'이메일'"
+                input-type="text"
+                :rules="{
+              required: true,
+              regex: /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i
+              }"
+                error-msg-class="errors-msg"
+              ></input-text>
+            </div>
+            <div class="form-item">
+              <input-text
+                v-model="user.userId"
+                name="userId"
+                :label="'아이디'"
+                :type="'text'"
+                :rules="{
+              required: true,
+              regex: /^[a-zA-Z0-9]*$/
+              }"
+                error-msg-class="errors-msg"
+              ></input-text>
+            </div>
+            <div class="form-item">
+              <input-text
+                v-model="user.password"
+                name="password"
+                :label="'비밀번호'"
+                :type="'password'"
+                :rules="{
+              required: true,
+              max: 16,
+              regex: /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/
+            }"
+                error-msg-class="errors-msg"
+              ></input-text>
+            </div>
+            <div class="form-item">
+              <input-text
+                v-model="user.confirmPassword"
+                name="비밀번호 확인"
+                :label="'비밀번호 확인'"
+                :type="'password'"
+                :rules="{
+              required: true,
+              max: 16,
+              regex: /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/
+            }"
+                error-msg-class="errors-msg"
+              ></input-text>
+            </div>
+            <div class="form-item">
+              <input-text
+                v-model="userQuestion.question"
+                name="비밀번호 찾기 질문"
+                :label="'비밀번호 찾기 질문'"
+                :type="'text'"
+                :rules="{
+              required: true
+              }"
+                error-msg-class="errors-msg"
+              ></input-text>
+            </div>
+            <div class="form-item">
+              <input-text
+                v-model="userQuestion.answer"
+                name="비밀번호 찾기 답변"
+                :label="'비밀번호 찾기 답변'"
+                :type="'text'"
+                :rules="{
+              required: true
+              }"
+                error-msg-class="errors-msg"
+              ></input-text>
+            </div>
+            <div class="submit__btn__wrapper">
+              <div class="btn__horizontal__wrapper">
+                <button
+                  class="basic__button"
+                  type="submit"
+                >회원가입
+                </button>
               </div>
             </div>
-        </Form>
+          </Form>
       </div>
     </div>
   </div>
 </template>
-
 <script>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { mapActions } from 'pinia'
+import sweetAlert from '@/wrapper/sweet-alert'
 import { usersStore } from '@/store/users'
-import ajax from '@/wrapper/ajax.js'
-
 export default {
   name: 'user-register',
-  setup () {
-    const router = useRouter()
-    const userId = ref(null)
-    const password = ref(null)
-    const email = ref(null)
-    const name = ref(null)
-    const users = usersStore()
-    const register = () =>
-      users.register({
-        userId: userId.value,
-        password: password.value,
-        email: email.value,
-        name: name.value,
-        role: 'ROLE_USER'
-      })
-        .then(() => {
-          router.push({ name: 'home-main' })
-        })
-    return {
-      userId,
-      password,
-      register,
-      router,
-      email,
-      name
-    }
-  },
-  watch: {
-    async 'userIdFocus.focused' (newVal) {
-      if (!newVal && this.userId) {
-        this.userIdFocus.isUse = await this._checkDuplicate(
-          'userId',
-          this.userId
-        )
-      } else if (newVal) {
-        this.userIdFocus.isUse = true
-      }
+  data: () => ({
+    user: {
+      email: '',
+      userId: '',
+      password: '',
+      confirmPassword: ''
     },
-    async 'emailFocus.focused' (newVal) {
-      if (!newVal && this.email) {
-        this.emailFocus.isUse = await this._checkDuplicate('email', this.email)
-      } else if (newVal) {
-        this.emailFocus.isUse = true
-      }
+    userQuestion: {
+      question: '',
+      answer: ''
     }
-  },
-  data () {
-    return {
-      passwordConfirm: '',
-      userIdFocus: {
-        focused: false,
-        isUse: true
-      },
-      emailFocus: {
-        focused: false,
-        isUse: true
-      }
-    }
-  },
+  }),
   methods: {
-    _checkDuplicate (type, value) {
-      return new Promise((resolve, reject) => {
-        ajax('GET', '/api/sign-up/check', null, null, { type: type, value: value }).then(
-          _data => {
-            resolve(_data)
-          }
-        )
-      })
+    ...mapActions(usersStore, ['register']),
+    _signUp () {
+      if (this.user.password !== this.user.confirmPassword) {
+        sweetAlert.noIcon('비밀번호가 일치하지 않습니다.', '확인')
+      } else {
+        this.register({
+          userId: this.user.userId,
+          password: this.user.password,
+          email: this.user.email,
+          question: this.userQuestion.question,
+          answer: this.userQuestion.answer
+        }).then(() => {
+          sweetAlert.noIcon('회원가입 완료되었습니다', '확인')
+          this.$router.push({ name: 'user-login' })
+        })
+      }
     }
   }
 }
 </script>
-<i18n>
-{
-  "en": {
-    "registerLabel" :"Enter your user information"
-  },
-  "ko": {
-    "registerLabel" :"회원 정보 입력"
-  }
-}
-</i18n>
-<style>
-</style>
+
 <style scoped>
-</style>
-<style lang="scss">
+.btn__horizontal__wrapper {
+  margin: 5px;
+}
+.form-item {
+  margin-bottom: 0.75em;
+}
 </style>

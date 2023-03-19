@@ -12,6 +12,7 @@ import { usersStore } from '@/store/users'
 import directives from '@/plugins/vue-directive'
 import '@/plugins'
 require('@/assets/css/style.scss')
+require('@/assets/css/note.scss')
 
 const app = createApp(App)
   .use(router)

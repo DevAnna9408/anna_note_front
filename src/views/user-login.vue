@@ -1,98 +1,103 @@
 <template>
-  <div id="user-login" class="single-small-box bg-grey base-height">
-    <div class="container">
-      <div class="small-box">
-        <div class="page-title-and-information">
-          <div class="preset"></div>
-          <div class="custom">
-            <img
-              id="circle-logo"
-              src="@/assets/img/logo.jpg"
-            />
-            <h3>User Login</h3>
-          </div>
-        </div>
-        <Form @submit="_login">
-          <input-text
-            name="userId"
-            :rules="{ required: true }"
-            v-model="userId"
-            label="아이디"
-            type="textArea"
-          />
-          <input-text
-            name="password"
-            type="password"
-            :rules="{
+  <div id="user-login">
+    <div
+      class="user__login__container"
+    >
+      <div class="form-wrapper">
+          <Form @submit="_login">
+            <div class="form-item">
+              <input-text
+                v-model="user.userId"
+                name="userId"
+                label="아이디"
+                :type="'text'"
+                :rules="{
+              required: true,
+              regex: /^[a-zA-Z0-9]*$/
+              }"
+                error-msg-class="errors-msg"
+              ></input-text>
+            </div>
+            <div class="form-item">
+              <input-text
+                v-model="user.password"
+                name="password"
+                label="비밀번호"
+                :type="'password'"
+                :rules="{
               required: true,
               max: 16,
-              regex:
-                /(?=.*\d{1,})(?=.*[~`!@#$%\^&*()-+=]{1,})(?=.*[a-z]{1,})(?=.*[A-Z]{1,}).{8,16}$/,
+              regex: /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/
             }"
-            v-model="password"
-            label="비밀번호"
-          />
-          <button class="btn btn-primary">{{ t("login_label") }}</button>
-        </Form>
-        <button @click="goToAgree">
-          {{ t("register_btn") }}
-        </button>
-        <div>
+                error-msg-class="errors-msg"
+              ></input-text>
+            </div>
+            <div class="submit__btn__wrapper">
+              <div class="btn__horizontal__wrapper">
+                <button
+                  class="basic__button"
+                  type="submit"
+                >로그인
+                </button>
+              </div>
+            </div>
+          </Form>
+        <div class="form-footer">
+          <p>
+            <a
+              @click="_signUp"
+            >회원가입</a></p>
+          <p><a
+            @click="_resetPassword"
+          >비밀번호를 모를 때 & <br /> 계정 잠금 해제시 클릭 :)</a></p>
+        </div>
       </div>
-      </div>
-
     </div>
   </div>
 </template>
-
 <script>
-import { useI18n } from 'vue-i18n'
 import { mapActions } from 'pinia'
 import { usersStore } from '@/store/users'
-import { useRouter } from 'vue-router'
 export default {
   name: 'user-login',
-  setup () {
-    const { t } = useI18n({})
-    const router = useRouter()
-    const goToAgree = () => {
-      router.push({ name: 'user-agree' })
-    }
-    return {
-      t,
-      goToAgree
-    }
-  },
-  data () {
-    return {
+  data: () => ({
+    user: {
       userId: '',
       password: ''
+    },
+    userQuestion: {
+      question: '',
+      answer: ''
     }
-  },
+  }),
   methods: {
     ...mapActions(usersStore, ['login']),
+    _resetPassword () {
+      this.$router.push({ name: 'reset-password' })
+    },
+    _signUp () {
+      this.$router.push({ name: 'register' })
+    },
     _login () {
-      const userId = this.userId
-      const password = this.password
-      this.login({ userId, password })
+      this.login({
+        userId: this.user.userId,
+        password: this.user.password
+      })
         .then(() => {
-          this.$router.push({ name: 'home-main' })
+          this.$router.push({ name: 'user-today-dinner' })
+        }).catch(() => {
+          this.$router.push({ name: 'user-login' })
         })
     }
   }
 }
 </script>
-<i18n>
-{
-  "en": {
-    "login_label": "login",
-    "register_btn": "sign-up"
-  },
-  "ko": {
-    "login_label": "로그인",
-    "register_btn": "회원가입"
-  }
-}
-</i18n>
 
-<style scoped></style>
+<style scoped>
+.btn__horizontal__wrapper {
+  margin: 5px;
+}
+.form-item {
+  margin-bottom: 0.75em;
+}
+</style>
