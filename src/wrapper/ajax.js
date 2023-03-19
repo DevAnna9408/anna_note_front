@@ -5,17 +5,19 @@ import { usersStore } from '@/store/users'
 import { errorsStore } from '@/store/errors'
 import { loadingStore } from '@/store/loading'
 import { i18n } from '@/plugins/i18n'
+
 const { t } = i18n.global
 
 const API_DOMAIN = process.env.VUE_APP_API_DOMAIN
 
-const FORBIDDEN = 403
-const UNAUTHORIZED = 401
 const BAD_REQUEST = 400
+const UNAUTHORIZED = 401
+const FORBIDDEN = 403
+const NOT_FOUND = 404
 const INTERNAL_SERVER_ERROR = 500
 
-const setError = (_data, errTitle) => {
-  sweetAlert.warning(errTitle, _data.message || t('error.server'))
+const setError = (_data) => {
+  sweetAlert.noIcon(_data.message || t('error.server'), '확인')
   throw _data
 }
 
@@ -37,9 +39,14 @@ const setNetworkError = (result, alert) => {
 }
 
 const removeAccessToken = (_err) => {
-  sweetAlert.warning('', _err.warningMessage || _err.message)
   usersStore().logout()
+  sweetAlert.noIcon(_err.warningMessage || _err.message, '확인')
   throw _err
+}
+
+const unAuthorized = () => {
+  usersStore().logout()
+  sweetAlert.noIcon('자동 로그인 시간이 만료되었습니다. 다시 로그인 해 주세요 :)', '확인')
 }
 
 function exception (result, errTitle, alert) {
@@ -48,11 +55,18 @@ function exception (result, errTitle, alert) {
   } else {
     const err = result.response // api에서 통신이 되었다 전체
     switch (err.status) {
-      case UNAUTHORIZED: // 401(인증)경우 로그인 페이지로 이동시킨다
+      case FORBIDDEN:
         removeAccessToken(err.data)
         break
-      case FORBIDDEN:
       case BAD_REQUEST:
+        removeAccessToken(err.data)
+        break
+      case NOT_FOUND: // 404(잘못된 url 혹은 비정상적 접근)경우 로그인 페이지로 이동시킨다
+        removeAccessToken(err.data)
+        break
+      case UNAUTHORIZED: // 401(인증)경우 로그인 페이지로 이동시킨다
+        unAuthorized()
+        break
       case INTERNAL_SERVER_ERROR:
         setError(err.data, errTitle) // 사용자 에러 처리
         break
@@ -62,6 +76,17 @@ function exception (result, errTitle, alert) {
   }
 }
 
+export const ajaxWithoutLoading = (
+  method,
+  url,
+  data,
+  header,
+  params,
+  errTitle
+) => {
+  return ajax(method, url, data, header, params, errTitle, true, false)
+}
+
 export const ajax = (
   method,
   url,
@@ -69,11 +94,12 @@ export const ajax = (
   header,
   params,
   errTitle,
-  alert = true
+  alert = true,
+  loading = true
 ) => {
   const accessToken = usersStore().loggedInAccessToken
   const locale = i18nStore().currentLocale
-  loadingStore().setLoading(true)
+  loadingStore().setLoading(loading)
   return axios({
     method,
     url: API_DOMAIN + url,
@@ -96,61 +122,4 @@ export const ajax = (
       loadingStore().setLoading(false)
     })
 }
-
-export const download = (
-  method,
-  url,
-  data,
-  header,
-  params,
-  errTitle,
-  alert = true
-) => {
-  const accessToken = usersStore().loggedInAccessToken
-  const locale = i18nStore().currentLocale
-  loadingStore().setLoading(true)
-  return axios({
-    method,
-    url: API_DOMAIN + url,
-    data,
-    headers: {
-      ...header,
-      'Content-Type': 'application/json; charset=utf-8',
-      'Accept-Language': locale,
-      Authorization: `Bearer ${accessToken}`
-    },
-    params,
-    responseType: 'arraybuffer'
-  })
-    .then((_res) => {
-      const file = new Blob([_res.data])
-      const a = document.createElement('a')
-      const url = window.URL.createObjectURL(file)
-      a.href = url
-      a.download = decodeURI(
-        _res.headers['content-disposition']
-          .toString('binary')
-          .split('filename=')[1]
-      )
-      document.body.appendChild(a)
-      a.click()
-      a.parentNode.removeChild(a)
-    })
-    .catch((result) => {
-      exception(result, errTitle, alert)
-    })
-    .finally(() => {
-      loadingStore().setLoading(false)
-    })
-}
-
-export const ajaxAll = (requests) => {
-  return axios
-    .all(requests)
-    .then((result) => result)
-    .catch((result) => {
-      exception(result)
-    })
-}
-
 export default ajax

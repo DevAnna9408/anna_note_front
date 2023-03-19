@@ -4,8 +4,8 @@ const { t } = i18n.global
 
 const swalWithMertButtons = Swal.mixin({
   customClass: {
-    confirmButton: 'btn btn-primary mt-3 m-1',
-    cancelButton: 'btn mt-3 m-1'
+    confirmButton: 'basic__button',
+    cancelButton: 'cancel__button'
   },
   buttonsStyling: false
 })
@@ -27,14 +27,14 @@ const confirm = (
   })
 }
 const sweetAlert = {
+  noIcon (text, buttonText) {
+    return confirm(null, null, text, buttonText)
+  },
   success (title, text, showConfirmButton, buttonText) {
     return confirm('success', title, text, buttonText, showConfirmButton)
   },
   error (title, text, buttonText) {
     return confirm('error', title, text, buttonText)
-  },
-  warning (title, text, buttonText) {
-    return confirm('warning', title, text, buttonText)
   },
   question (
     title,
@@ -43,7 +43,6 @@ const sweetAlert = {
     cancelButtonText = t('error.no')
   ) {
     return swalWithMertButtons.fire({
-      icon: 'question',
       title,
       text,
       showCancelButton: true,
