@@ -1,0 +1,10 @@
+{
+  "title": {
+    "home": "Home",
+    "admin": "Admin",
+    "user": {
+      "title": "User",
+      "register": "Register"
+    }
+  }
+}

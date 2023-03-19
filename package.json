@@ -1,0 +1,103 @@
+{
+  "name": "vue3-clean",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve --port 3000",
+    "build": "vue-cli-service build",
+    "testbuild": "vue-cli-service build --mode awstest",
+    "test:unit": "vue-cli-service test:unit",
+    "test:e2e": "vue-cli-service test:e2e",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@vee-validate/i18n": "^4.5.7",
+    "@vee-validate/rules": "^4.5.7",
+    "@vueup/vue-quill": "^1.0.0-beta.8",
+    "aws-sdk": "^2.1048.0",
+    "axios": "^0.24.0",
+    "click-outside-vue3": "^4.0.1",
+    "core-js": "^3.6.5",
+    "dayjs": "^1.10.7",
+    "pinia": "2.0.4",
+    "quill-blot-formatter": "^1.0.5",
+    "sweetalert2": "^11.3.1",
+    "v-calendar": "^3.0.0-alpha.8",
+    "vee-validate": "^4.5.7",
+    "vue": "^3.0.0",
+    "vue-accessible-color-picker": "^4.0.3",
+    "vue-i18n": "^9.2.0-beta.23",
+    "vue-kindergarten": "^0.3.3",
+    "vue-recaptcha": "^2.0.1",
+    "vue-router": "^4.0.0-0",
+    "vue3-cookies": "^1.0.6",
+    "vuex": "^4.0.0-0"
+  },
+  "devDependencies": {
+    "@intlify/vue-i18n-loader": "^4.1.0",
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-e2e-cypress": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-plugin-unit-mocha": "~4.5.0",
+    "@vue/cli-plugin-vuex": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/compiler-sfc": "^3.0.0",
+    "@vue/eslint-config-standard": "^5.1.2",
+    "@vue/test-utils": "^2.0.0-0",
+    "babel-eslint": "^10.1.0",
+    "chai": "^4.1.2",
+    "eslint": "^6.7.2",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "eslint-plugin-vue": "^7.0.0",
+    "lint-staged": "^12.1.5",
+    "sass": "^1.26.5",
+    "sass-loader": "^8.0.2"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "@vue/standard"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {},
+    "overrides": [
+      {
+        "files": [
+          "**/__tests__/*.{j,t}s?(x)",
+          "**/tests/unit/**/*.spec.{j,t}s?(x)"
+        ],
+        "env": {
+          "mocha": true
+        }
+      }
+    ]
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": [
+      "vue-cli-service lint",
+      "git add"
+    ],
+    "*.vue": [
+      "vue-cli-service lint",
+      "git add"
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "user": {
+    "login": "Sign In",
+    "pw_placeholder_change": "At least one upper case, lower case, number and must be 8 to 16 letters.",
+    "id": "ID",
+    "sing_up": "Create Account",
+    "find": {
+      "id": "Find Your ID",
+      "pw": "Find Password"
+    },
+    "using_id": "ID is already occupied.",
+    "using_email": "Email is already occupied.",
+    "withdraw_user": "Withdrawal",
+    "enrollment": "Create Account",
+    "require": "require",
+    "change_password": "Change Password",
+    "change_account": "Change Account",
+    "id_placeholder": "Please enter your ID",
+    "pw_placeholder": "Please enter your password",
+    "confirm_pw": "Confirm Password",
+    "user_info": "User Information",
+    "saved": "saved",
+    "again_login": "Please log in again.",
+    "alert": {
+      "success": "Success"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "title": {
+    "home": "홈",
+    "admin": "관리자",
+    "user": {
+      "title": "사용자",
+      "register": "회원가입"
+    }
+  }
+}
