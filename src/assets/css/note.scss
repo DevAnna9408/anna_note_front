@@ -1,5 +1,6 @@
-$anna-dream-color: #8DC63F;
-$anna-worry-color: #8DC63F;
+$anna-dream-color: #BCCEF8;
+$anna-dream-color-bold: #98A8F8;
+$anna-worry-color: #F5F5F5;
 
 * {
   -webkit-tap-highlight-color: transparent;
@@ -15,19 +16,16 @@ body {
 
 .header-container {
   width: 100%;
-  max-width: 100%;
   padding-left: 25px;
-  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: #FFFFFF;
 
   .side__nav {
-    border-bottom-right-radius: 20px;
-    border-top-right-radius: 20px;
+    border-top-right-radius: 60px;
     height: 0;
-    width: 100vw;
+    width: 100%;
     position: fixed;
     z-index: 999;
     top: 0;
@@ -65,6 +63,13 @@ body {
 
   }
 
+}
+
+#home-main {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 #user-login {
@@ -167,7 +172,7 @@ body {
   }
 }
 
-#user-board {
+#user-dream-board {
   margin-top: 80px;
   ul {
     text-align: center;
@@ -238,12 +243,6 @@ body {
         }
       }
 
-      @media screen and (max-width: 700px) {
-        .grid-progress-bg {
-          display: none;
-        }
-      }
-
       @media screen and (max-width: 600px) {
         .grid_wrapper {
           position: static;
@@ -253,13 +252,13 @@ body {
       }
     }
 
-    .grid-progress,
-    .grid-completes,
+    .grid-icon-bottom,
+    .grid-icons,
     .grid_content {
       color: $secondary-text-color;
     }
 
-    .grid-completes,
+    .grid-icons,
     .grid_content,
     .grid-title,
     .grid-tag {
@@ -267,7 +266,7 @@ body {
     }
 
     .grid_content,
-    .grid-completes,
+    .grid-icons,
     .grid-title {
       vertical-align: middle;
     }
@@ -276,8 +275,6 @@ body {
       display: inline-block;
       width: 100px;
       white-space: nowrap;
-
-      overflow: hidden;
     }
   }
 
@@ -305,13 +302,15 @@ body {
 
       font-size: 16px;
       line-height: 20px;
+
+      margin-bottom: 10px;
     }
 
     .grid_content {
       color: $secondary-text-color;
     }
 
-    .grid-progress {
+    .grid-icon-bottom {
       display: block;
       position: absolute;
       bottom: 0;
@@ -323,20 +322,11 @@ body {
       font-size: 13px;
     }
 
-    .grid-progress-bg {
-      width: 40%;
-      display: block;
-
-      @media screen and (max-width: 200px) {
-        display: none;
-      }
-    }
-
-    .grid-progress-labels {
+    .grid-icon-wrapper {
       position: absolute;
       right: 20px;
       top: 0;
-      line-height: 40px;
+      line-height: 35px;
 
       @media screen and (max-width: 200px) {
         right: auto;
@@ -344,16 +334,11 @@ body {
       }
     }
 
-    .grid-progress-label {
+    .grid-icons {
       line-height: 21px;
-      font-size: 13px;
-      font-weight: 400;
-    }
-
-    .grid-completes {
-      line-height: 21px;
-      font-size: 13px;
       vertical-align: middle;
+      margin-left: 10px;
+      font-size: 20px;
     }
 
     .grid-tag {
@@ -365,36 +350,12 @@ body {
     .grid_content {
       font-size: 12px;
       line-height: 20px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      height: 200px;
+
     }
   }
-
-  .grid-progress-label {
-    vertical-align: middle;
-    margin: 0 10px;
-    color: $anna-dream-color;
-  }
-
-  .grid-progress-bg {
-    display: inline-block;
-    vertical-align: middle;
-    position: relative;
-    width: 100px;
-    height: 4px;
-    border-radius: 2px;
-    overflow: hidden;
-    background: #EEEEEE;
-  }
-
-  .grid-progress-fg {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    height: 100%;
-    left: 0;
-    margin: 0;
-    background: $anna-dream-color;
-  }
-
 }
 
 /* Pagination */
@@ -428,12 +389,12 @@ body {
 
 .basic__button {
   background-color: $anna-dream-color;
-  box-shadow: 0 5px 0 0 #6F9E63;
+  box-shadow: 0 5px 0 0 #98A8F8;
 }
 
 .cancel__button {
-  background-color: #E77471;
-  box-shadow: 0 5px 0 0 #F75D59;
+  background-color: #FF9F9F;
+  box-shadow: 0 5px 0 0 #E97777;
 }
 
 .basic__button,

@@ -1,16 +1,16 @@
 import ajax from '@/wrapper/ajax'
-import { useCookies } from 'vue3-cookies'
 import { defineStore } from 'pinia'
-const { cookies } = useCookies()
+import router from '@/router'
 
 export const usersStore = defineStore('users', {
   state: () => ({
-    accessToken: cookies.get('accessToken') || '',
-    user: cookies.get('user') ? cookies.get('user') : {}
+    accessToken: localStorage.getItem('accessToken') || '',
+    user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {}
   }),
   getters: {
     authStatus: (_state) => _state.status,
     isUser: (_state) => Boolean(_state.accessToken) && Boolean(_state.user),
+    userCustomInfo: (_state) => _state.user.userCustomInfo,
     isGuest: (_state) => !_state.accessToken,
     isAuthenticated: (_state) => Boolean(_state.accessToken),
     loggedInUser: (_state) => _state.user,
@@ -24,9 +24,9 @@ export const usersStore = defineStore('users', {
     setloginUser (accessToken, user) {
       this.$patch((state) => {
         state.accessToken = accessToken
-        cookies.set('accessToken', accessToken)
-        cookies.set('user', user)
         state.user = user
+        localStorage.setItem('accessToken', accessToken)
+        localStorage.setItem('user', JSON.stringify(user))
       })
     },
     login (_user) {
@@ -37,11 +37,12 @@ export const usersStore = defineStore('users', {
             const _user = {}
             _user.userId = _data.userId
             _user.roles = _data.roles
+            _user.userCustomInfo = _data.customInfo
             this.setloginUser(accessToken, _user)
             resolve(_data)
           })
           .catch((_err) => {
-          // 쿠키 기한때문에 처리필요
+            // 쿠키 기한때문에 처리필요
             reject(_err)
           })
       })
@@ -65,6 +66,11 @@ export const usersStore = defineStore('users', {
       this.$patch((state) => {
         state.accessToken = null
         state.user = {}
+        state.userCustomInfo = {}
+        localStorage.clear()
+        router.push({
+          name: 'user-login'
+        })
       })
     }
   }

@@ -6,9 +6,16 @@
 <!--        {{ userId }}-->
         &times;
       </a>
-      <router-link :to="{ name: 'user-board' }"
-                   style="margin-top: 55px;"
-                   @click="_closeNav">다정한 노트
+      <router-link
+        :to="{ name: 'user-dream-board' }"
+        style="margin-top: 55px;"
+        @click="_closeNav">
+        다짐 노트
+      </router-link>
+      <router-link
+        :to="{ name: 'user-worry-board' }"
+        @click="_closeNav">
+        걱정 노트
       </router-link>
       <a
         @click="_logout">로그아웃</a>
@@ -82,3 +89,14 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+.basic__background {
+  background: #FFFFFF;
+}
+.dream__background {
+  background: #BCCEF8;
+}
+.worry__background {
+  background: #F5F5F5;
+}
+</style>

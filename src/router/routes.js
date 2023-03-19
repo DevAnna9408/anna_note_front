@@ -8,12 +8,18 @@ function loadLayout (layout) {
     import('@/components/layout/' + layout + '.vue')
 }
 
-function loadViewHeaderFooterSide (view) {
+// function loadViewHeaderFooterSide (view) {
+//   return {
+//     default: loadView(view),
+//     sidebar: loadLayout('main-sidebar'),
+//     footer: loadLayout('main-footer'),
+//     header: loadLayout('main-navbar')
+//   }
+// }
+
+function homeMain (view) {
   return {
-    default: loadView(view),
-    sidebar: loadLayout('main-sidebar'),
-    footer: loadLayout('main-footer'),
-    header: loadLayout('main-navbar')
+    default: loadView(view)
   }
 }
 
@@ -33,7 +39,7 @@ const routes = [
   {
     path: '/',
     name: 'home-main',
-    components: loadViewHeaderFooterSide('home-main'),
+    components: homeMain('home-main'),
     meta: {
       title: 'title.home'
     }
@@ -68,11 +74,19 @@ const routes = [
     components: parent('user'),
     children: [
       {
-        path: 'board',
-        name: 'user-board',
-        component: loadView('user-board'),
+        path: 'dream-board',
+        name: 'user-dream-board',
+        component: loadView('user-dream-board'),
         meta: {
-          title: '다정한 노트'
+          title: '다짐 노트'
+        }
+      },
+      {
+        path: 'worry-board',
+        name: 'user-worry-board',
+        component: loadView('user-worry-board'),
+        meta: {
+          title: '걱정 노트'
         }
       }
     ]
