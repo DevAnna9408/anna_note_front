@@ -68,11 +68,11 @@ const routes = [
     components: parent('user'),
     children: [
       {
-        path: 'agree',
-        name: 'user-agree',
-        component: loadView('user-agree'),
+        path: 'board',
+        name: 'user-board',
+        component: loadView('user-board'),
         meta: {
-          title: 'title.user.register'
+          title: '다정한 노트'
         }
       }
     ]

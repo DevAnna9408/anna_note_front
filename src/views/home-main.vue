@@ -1,5 +1,5 @@
 <template>
-  <div id="home-main" class="admin-container">
+  <div id="home-main">
     <div class="container">
       <div class="row">
         <h2>Hello World!</h2>

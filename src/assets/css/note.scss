@@ -1,9 +1,70 @@
+$anna-dream-color: #8DC63F;
+$anna-worry-color: #8DC63F;
+
 * {
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select:none;
   -moz-user-select:none;
   -ms-user-select:none;
   user-select:none;
+}
+
+body {
+  background: #F5F5F5;
+}
+
+.header-container {
+  width: 100%;
+  max-width: 100%;
+  padding-left: 25px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #FFFFFF;
+
+  .side__nav {
+    border-bottom-right-radius: 20px;
+    border-top-right-radius: 20px;
+    height: 0;
+    width: 100vw;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    background-color: #FFFFFF;
+    overflow: hidden;
+    transition: 0.5s;
+  }
+
+  .side__nav a {
+    cursor: pointer;
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 15px;
+    color: #000000;
+    display: block;
+    transition: 0.3s
+  }
+
+  .side__nav a:hover, .offcanvas a:focus{
+    background-color: $anna-dream-color;
+  }
+
+  .side__nav .close__btn {
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    margin-left: 50px;
+
+    &:hover {
+      background-color: #FFFFFF;
+    }
+
+  }
+
 }
 
 #user-login {
@@ -55,14 +116,14 @@
     width: 100%;
     input {
       border: none;
-      border-bottom: 2px solid #e9e9e9;
-      color: #666;
+      border-bottom: 2px solid #E9E9E9;
+      color: #666666;
       font-size: 1em;
       height: 20px;
       transition: border-color 0.3s;
       width: 100%;
       &:focus {
-        border-bottom: 2px solid #c0c0c0;
+        border-bottom: 2px solid #C0C0C0;
         outline: none;
       }
     }
@@ -72,9 +133,9 @@
     margin: 2em 0 0;
     width: 100%;
     .button {
-      background: #f16272;
+      background: #F16272;
       border: none;
-      color: #fff;
+      color: #FFFFFF;
       cursor: pointer;
       height: 50px;
       font-size: 1.2em;
@@ -98,7 +159,7 @@
     }
 
     a {
-      color: #8c8c8c;
+      color: #8C8C8C;
       text-decoration: none;
       transition: border-color 0.3s;
 
@@ -106,14 +167,273 @@
   }
 }
 
+#user-board {
+  margin-top: 80px;
+  ul {
+    text-align: center;
+    li {
+      text-align: left;
+    }
+  }
+
+  $primary-text-color: #000000;
+  $secondary-text-color: #A1A1A4;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    background: #F5F5F5;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px;
+
+    text-shadow: 0 0 1px rgba(255,255,255,0.004);
+    font-size: 100%;
+    font-weight: 400;
+  }
+
+  .grids {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  %card-style {
+    display: block;
+    margin-top: 10px;
+    padding: 20px;
+    border-radius: 2px;
+
+    background: #FFFFFF;
+    box-shadow: 0 2px 1px rgba(170,170,170,0.25);
+  }
+
+  .grid-item {
+    @extend %card-style;
+  }
+
+  .grid-title {
+    font-weight: 400;
+  }
+
+  .list {
+    .grid-item {
+      position: relative;
+      padding: 0;
+
+      font-size: 14px;
+      line-height: 40px;
+
+      .grid_wrapper {
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+
+      @media screen and (max-width: 800px) {
+        .stage:not(.active) {
+          display: none;
+        }
+      }
+
+      @media screen and (max-width: 700px) {
+        .grid-progress-bg {
+          display: none;
+        }
+      }
+
+      @media screen and (max-width: 600px) {
+        .grid_wrapper {
+          position: static;
+          line-height: 20px;
+          padding-bottom: 10px;
+        }
+      }
+    }
+
+    .grid-progress,
+    .grid-completes,
+    .grid_content {
+      color: $secondary-text-color;
+    }
+
+    .grid-completes,
+    .grid_content,
+    .grid-title,
+    .grid-tag {
+      margin: 0 10px;
+    }
+
+    .grid_content,
+    .grid-completes,
+    .grid-title {
+      vertical-align: middle;
+    }
+
+    .grid_content {
+      display: inline-block;
+      width: 100px;
+      white-space: nowrap;
+
+      overflow: hidden;
+    }
+  }
+
+
+  .grid {
+    .grid-item {
+      position: relative;
+      display: inline-block;
+      vertical-align: top;
+      height: 300px;
+      width: 350px;
+      margin: 10px;
+
+      @media screen and (max-width: 600px) {
+        display: block;
+        width: auto;
+        height: 300px;
+        margin: 10px auto;
+      }
+    }
+
+    .grid-title {
+      display: block;
+      max-width: 80%;
+
+      font-size: 16px;
+      line-height: 20px;
+    }
+
+    .grid_content {
+      color: $secondary-text-color;
+    }
+
+    .grid-progress {
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      padding: 20px;
+      border-top: 1px solid #EEEEEE;
+      font-size: 13px;
+    }
+
+    .grid-progress-bg {
+      width: 40%;
+      display: block;
+
+      @media screen and (max-width: 200px) {
+        display: none;
+      }
+    }
+
+    .grid-progress-labels {
+      position: absolute;
+      right: 20px;
+      top: 0;
+      line-height: 40px;
+
+      @media screen and (max-width: 200px) {
+        right: auto;
+        left: 10px;
+      }
+    }
+
+    .grid-progress-label {
+      line-height: 21px;
+      font-size: 13px;
+      font-weight: 400;
+    }
+
+    .grid-completes {
+      line-height: 21px;
+      font-size: 13px;
+      vertical-align: middle;
+    }
+
+    .grid-tag {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .grid_content {
+      font-size: 12px;
+      line-height: 20px;
+    }
+  }
+
+  .grid-progress-label {
+    vertical-align: middle;
+    margin: 0 10px;
+    color: $anna-dream-color;
+  }
+
+  .grid-progress-bg {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    width: 100px;
+    height: 4px;
+    border-radius: 2px;
+    overflow: hidden;
+    background: #EEEEEE;
+  }
+
+  .grid-progress-fg {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    left: 0;
+    margin: 0;
+    background: $anna-dream-color;
+  }
+
+}
+
+/* Pagination */
+#pagination {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0 10px 0;
+  height: 50px;
+}
+#pagination li {
+  margin: 0 7px;
+  cursor: pointer;
+}
+#pagination li.active a {
+  background-color: #3d3d3d;
+  color: #FFFFFF;
+  border: 1px solid #3d3d3d;
+}
+#pagination li:first-child a,
+#pagination li:last-child a {
+  border: 0;
+}
+#pagination li a {
+  color: #000000;
+  padding: 3px 3px;
+  border: none;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+}
+
 .basic__button {
-  background-color: #8DC63F;
-  box-shadow: 0 5px 0 0 #6f9e63;
+  background-color: $anna-dream-color;
+  box-shadow: 0 5px 0 0 #6F9E63;
 }
 
 .cancel__button {
-  background-color: #e77471;
-  box-shadow: 0 5px 0 0 #f75d59;
+  background-color: #E77471;
+  box-shadow: 0 5px 0 0 #F75D59;
 }
 
 .basic__button,
