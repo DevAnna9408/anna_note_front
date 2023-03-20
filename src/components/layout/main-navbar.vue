@@ -7,15 +7,20 @@
         &times;
       </a>
       <router-link
-        :to="{ name: 'user-dream-board' }"
+        :to="{ name: 'user-add-post' }"
         style="margin-top: 55px;"
         @click="_closeNav">
-        다짐 노트
+        걱정 메모
       </router-link>
       <router-link
         :to="{ name: 'user-worry-board' }"
         @click="_closeNav">
         걱정 노트
+      </router-link>
+      <router-link
+        :to="{ name: 'user-dream-board' }"
+        @click="_closeNav">
+        다짐 노트
       </router-link>
       <a
         @click="_logout">로그아웃</a>

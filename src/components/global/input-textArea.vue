@@ -6,16 +6,8 @@
     <textarea
         v-bind="textareaAttributes"
         v-model="inputValue"
-        :name="name"
-        @input="countTextCnt">
+        >
     </textarea>
-    <span :class="textCntClass">
-      {{currentTextCnt}} / {{maxlength}}
-    </span>
-    <!-- 에러메시지 -->
-    <p :class='errorMsgClass' v-show='errorMessage || meta.valid'>
-      {{ errorMessage }}
-    </p>
   </div>
 </template>
 
@@ -70,15 +62,6 @@ export default {
     return {
       currentTextCnt: 0
     }
-  },
-  methods: {
-    countTextCnt () {
-      var value = document.getElementsByName(this.name)[0].value
-      this.currentTextCnt = value.length
-    }
-  },
-  mounted () {
-    this.countTextCnt()
   }
 }
 </script>

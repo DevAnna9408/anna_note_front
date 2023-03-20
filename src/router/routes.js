@@ -41,7 +41,7 @@ const routes = [
     name: 'home-main',
     components: homeMain('home-main'),
     meta: {
-      title: 'title.home'
+      title: '다정한 노트'
     }
   },
   {
@@ -87,6 +87,14 @@ const routes = [
         component: loadView('user-worry-board'),
         meta: {
           title: '걱정 노트'
+        }
+      },
+      {
+        path: 'add-post',
+        name: 'user-add-post',
+        component: loadView('user-add-post'),
+        meta: {
+          title: '걱정 메모'
         }
       }
     ]
