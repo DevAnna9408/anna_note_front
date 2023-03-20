@@ -9,9 +9,9 @@
           23.03.01
         </div>
 
-        <span class="grid-tag">
-         #해결되지 않은 걱정
-       </span>
+        <div class="grid-tag">
+          #해결되지 않은 걱정
+        </div>
 
         <div class="grid_content">
           내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
@@ -35,9 +35,14 @@
             다짐하기
           </button>
           <button
+            class="basic__button"
+          >
+            수정
+          </button>
+          <button
             class="cancel__button"
           >
-            삭제
+            떠나보내기
           </button>
         </div>
     </li>
