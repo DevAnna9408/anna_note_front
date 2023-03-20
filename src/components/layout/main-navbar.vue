@@ -22,6 +22,11 @@
         @click="_closeNav">
         다짐 노트
       </router-link>
+      <router-link
+        :to="{ name: 'user-graph' }"
+        @click="_closeNav">
+        통계
+      </router-link>
       <a
         @click="_logout">로그아웃</a>
       <a @click="_deleteUser">회원탈퇴</a>

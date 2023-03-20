@@ -74,11 +74,11 @@ const routes = [
     components: parent('user'),
     children: [
       {
-        path: 'dream-board',
-        name: 'user-dream-board',
-        component: loadView('user-dream-board'),
+        path: 'add-post',
+        name: 'user-add-post',
+        component: loadView('user-add-post'),
         meta: {
-          title: '다짐 노트'
+          title: '걱정 메모'
         }
       },
       {
@@ -90,11 +90,19 @@ const routes = [
         }
       },
       {
-        path: 'add-post',
-        name: 'user-add-post',
-        component: loadView('user-add-post'),
+        path: 'dream-board',
+        name: 'user-dream-board',
+        component: loadView('user-dream-board'),
         meta: {
-          title: '걱정 메모'
+          title: '다짐 노트'
+        }
+      },
+      {
+        path: 'graph',
+        name: 'user-graph',
+        component: loadView('user-graph'),
+        meta: {
+          title: '통계'
         }
       }
     ]
