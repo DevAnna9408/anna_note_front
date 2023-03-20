@@ -29,6 +29,7 @@
             확인
           </button>
           <button
+            @click="_delete"
             class="cancel__button"
           >
             삭제
@@ -40,6 +41,8 @@
 </template>
 
 <script>
+import sweetAlert from '@/wrapper/sweet-alert'
+
 export default {
   name: 'user-after-post',
   data () {
@@ -47,7 +50,10 @@ export default {
   },
   methods: {
     _confirm () {
-      this.$router.push({ name: 'user-add-post' })
+      this.$router.push({ name: 'user-worry-board' })
+    },
+    _delete () {
+      sweetAlert.question(null, '메모한 걱정을 삭제할까요? 때론 너무 사소한 걱정을 하는 것도 스트레스가 될 수 있어요 :)', '떠나보내기', '머무르기')
     }
   }
 }

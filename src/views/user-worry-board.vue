@@ -30,16 +30,19 @@
           class="button__wrapper"
         >
           <button
+            @click="_dream"
             class="basic__button"
           >
             다짐하기
           </button>
           <button
+            @click="_edit"
             class="basic__button"
           >
             수정
           </button>
           <button
+            @click="_delete"
             class="cancel__button"
           >
             떠나보내기
@@ -60,6 +63,7 @@
 
 <script>
 import ajax from '@/wrapper/ajax'
+import sweetAlert from '@/wrapper/sweet-alert'
 
 export default {
   name: 'user-worry-board',
@@ -74,6 +78,15 @@ export default {
     }
   },
   methods: {
+    _dream () {
+      sweetAlert.input('이 걱정을 보고 생각난 다짐을 간단히 적어주세요 :)', '다짐하기')
+    },
+    _edit () {
+      this.$router.push({ name: 'user-edit-worry' })
+    },
+    _delete () {
+      sweetAlert.question(null, '걱정을 떠나보낼까요? 잘 해결되었길 바래요 :)', '떠나보내기', '머무르기')
+    },
     _inputPage (page) {
       this._getPagedResults(page - 1)
     },

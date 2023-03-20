@@ -53,6 +53,22 @@ const routes = [
     }
   },
   {
+    path: '/edit-worry',
+    name: 'user-edit-worry',
+    component: loadView('user-edit-worry'),
+    meta: {
+      title: '걱정 수정'
+    }
+  },
+  {
+    path: '/edit-dream',
+    name: 'user-edit-dream',
+    component: loadView('user-edit-dream'),
+    meta: {
+      title: '다짐 수정'
+    }
+  },
+  {
     path: '/login',
     name: 'user-login',
     component: loadView('user-login'),

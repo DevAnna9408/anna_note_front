@@ -39,8 +39,8 @@ const sweetAlert = {
   question (
     title,
     text,
-    confirmButtonText = t('error.yes'),
-    cancelButtonText = t('error.no')
+    confirmButtonText,
+    cancelButtonText
   ) {
     return swalWithMertButtons.fire({
       title,
@@ -48,6 +48,16 @@ const sweetAlert = {
       showCancelButton: true,
       confirmButtonText,
       cancelButtonText
+    })
+  },
+  input (text, confirmButtonText) {
+    return swalWithMertButtons.fire({
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off'
+      },
+      text,
+      confirmButtonText: confirmButtonText
     })
   }
 }
