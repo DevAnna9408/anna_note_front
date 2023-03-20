@@ -19,6 +19,7 @@
           class="button__wrapper"
         >
           <button
+            @click="_post"
             class="basic__button"
           >
             작성
@@ -34,6 +35,11 @@ export default {
   name: 'user-add-post',
   data () {
     return {
+    }
+  },
+  methods: {
+    _post () {
+      this.$router.push({ name: 'user-after-post' })
     }
   }
 }

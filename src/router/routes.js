@@ -45,6 +45,14 @@ const routes = [
     }
   },
   {
+    path: '/after-post',
+    name: 'user-after-post',
+    component: loadView('user-after-post'),
+    meta: {
+      title: '메모 확인'
+    }
+  },
+  {
     path: '/login',
     name: 'user-login',
     component: loadView('user-login'),

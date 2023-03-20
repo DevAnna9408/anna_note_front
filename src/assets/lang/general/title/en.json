@@ -6,7 +6,10 @@
       "title": "User",
       "sign-up": "Sign up",
       "reset-password": "Reset Password",
-      "user-dream-board": "User Board"
+      "user-add-post": "User Add Post",
+      "user-after-post": "User After Post",
+      "user-dream-board": "User Dream Board",
+      "user-worry-board": "User Worry Board"
     }
   }
 }
