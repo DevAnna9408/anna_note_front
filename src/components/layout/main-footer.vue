@@ -1,13 +1,6 @@
 <template>
   <footer id="main-footer">
     <div class="container">
-      <div class="footer-logo">
-        <router-link :to="{ name: 'home-main' }">
-        <img
-          src="@/assets/img/logo.jpg"
-        >
-      </router-link>
-      </div>
       <div class="footer-address">
         &copy; {{ year }}, made by
         <a

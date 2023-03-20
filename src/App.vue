@@ -4,6 +4,7 @@
       <router-view name="header" class="site-navigation" />
     </div>
     <router-view />
+    <router-view name="footer" />
   </div>
 </template>
 
