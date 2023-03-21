@@ -7,17 +7,9 @@
           22.03.01
         </div>
 
-        <div class="grid_content">
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
+        <div
+          v-html="postData.content"
+          class="grid_content">
         </div>
         <div
           class="button__wrapper"
@@ -42,19 +34,43 @@
 
 <script>
 import sweetAlert from '@/wrapper/sweet-alert'
+import ajax from '@/wrapper/ajax'
 
 export default {
   name: 'user-after-post',
   data () {
-    return {}
+    return {
+      postData: {
+        content: '',
+        createdDate: '',
+        userOid: 0,
+        worryOid: 0,
+        worryTag: { code: '', value: '' }
+      }
+    }
   },
   methods: {
     _confirm () {
       this.$router.push({ name: 'user-worry-board' })
     },
-    _delete () {
+    _delete: function () {
       sweetAlert.question(null, '메모한 걱정을 삭제할까요? 때론 너무 사소한 걱정을 하는 것도 스트레스가 될 수 있어요 :)', '떠나보내기', '머무르기')
+        .then(con => {
+          if (con.value) {
+            ajax('DELETE', '/api/worry', null, null, {
+              userOid: this.postData.userOid,
+              worryOid: this.postData.worryOid
+            }).then(() => {
+              sweetAlert.noIcon('걱정을 떠나보냈습니다 :)', '확인')
+              this.$router.push({ name: 'user-add-post' })
+            })
+          }
+        })
     }
+  },
+  mounted () {
+    if (this.$route.params.postData) this.postData = JSON.parse(this.$route.params.postData)
+    else this.$router.push({ name: 'user-add-post' })
   }
 }
 </script>

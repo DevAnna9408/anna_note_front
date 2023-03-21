@@ -4,7 +4,7 @@
       <li class="grid-item">
 
         <div class="grid-title">
-          22.03.01
+          {{ todayDate }}
         </div>
 
         <div class="grid_content">
@@ -12,6 +12,7 @@
             <input-textArea
               :maxlength="'1024'"
               :placeholder="'시도때도 없이 떠오르는 걱정을\n\n여기에 적어주세요 :)'"
+              v-model="worryIn.content"
             />
           </div>
         </div>
@@ -31,15 +32,32 @@
 </template>
 
 <script>
+import ajax from '@/wrapper/ajax'
+import { mapState } from 'pinia'
+import { usersStore } from '@/store/users'
+
 export default {
   name: 'user-add-post',
   data () {
     return {
+      todayDate: new Date().toISOString().substr(0, 10).replace('T', ' '),
+      worryIn: {
+        content: ''
+      }
     }
+  },
+  computed: {
+    ...mapState(usersStore, ['userCustomInfo'])
   },
   methods: {
     _post () {
-      this.$router.push({ name: 'user-after-post' })
+      ajax('POST', '/api/worry', {
+        content: this.worryIn.content.replaceAll('\n', '<br />')
+      }, null, {
+        userOid: this.userCustomInfo.userOid
+      }).then(_res => {
+        this.$router.push({ name: 'user-after-post', params: { postData: JSON.stringify(_res) } })
+      })
     }
   }
 }

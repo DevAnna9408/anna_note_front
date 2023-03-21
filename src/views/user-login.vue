@@ -84,7 +84,7 @@ export default {
         password: this.user.password
       })
         .then(() => {
-          this.$router.push({ name: 'user-today-dinner' })
+          this.$router.push({ name: 'user-worry-board' })
         }).catch(() => {
           this.$router.push({ name: 'user-login' })
         })
