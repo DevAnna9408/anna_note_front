@@ -8,7 +8,7 @@
         </div>
 
         <div
-          v-html="postData.content"
+          v-html="postWorry.content"
           class="grid_content">
         </div>
         <div
@@ -40,7 +40,7 @@ export default {
   name: 'user-after-post',
   data () {
     return {
-      postData: {
+      postWorry: {
         content: '',
         createdDate: '',
         userOid: 0,
@@ -58,8 +58,8 @@ export default {
         .then(con => {
           if (con.value) {
             ajax('DELETE', '/api/worry', null, null, {
-              userOid: this.postData.userOid,
-              worryOid: this.postData.worryOid
+              userOid: this.postWorry.userOid,
+              worryOid: this.postWorry.worryOid
             }).then(() => {
               sweetAlert.noIcon('걱정을 떠나보냈습니다 :)', '확인')
               this.$router.push({ name: 'user-add-post' })
@@ -69,7 +69,7 @@ export default {
     }
   },
   mounted () {
-    if (this.$route.params.postData) this.postData = JSON.parse(this.$route.params.postData)
+    if (this.$route.params.postWorry) this.postWorry = JSON.parse(this.$route.params.postWorry)
     else this.$router.push({ name: 'user-add-post' })
   }
 }

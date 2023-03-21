@@ -56,7 +56,7 @@ export default {
       }, null, {
         userOid: this.userCustomInfo.userOid
       }).then(_res => {
-        this.$router.push({ name: 'user-after-post', params: { postData: JSON.stringify(_res) } })
+        this.$router.push({ name: 'user-after-post', params: { postWorry: JSON.stringify(_res) } })
       })
     }
   }

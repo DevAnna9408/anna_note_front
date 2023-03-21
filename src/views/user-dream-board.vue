@@ -30,12 +30,6 @@
           class="button__wrapper"
         >
           <button
-            @click="_edit"
-            class="basic__button"
-          >
-            수정
-          </button>
-          <button
             @click="_delete"
             class="cancel__button"
           >
@@ -72,9 +66,6 @@ export default {
     }
   },
   methods: {
-    _edit () {
-      this.$router.push({ name: 'user-edit-dream' })
-    },
     _delete () {
       sweetAlert.question(null, '다짐을 삭제할까요? 이젠 다짐하지 않아도 실천하는 사람이 되었네요 :)', '삭제', '머무르기')
     },

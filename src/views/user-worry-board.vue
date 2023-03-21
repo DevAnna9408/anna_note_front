@@ -2,29 +2,20 @@
   <div id="user-dream-board">
     <ul class="grids grid">
       <li
-        v-for="index in 10" :key="index"
+        v-for="(item, index) in pagedResult.content" :key="index"
         class="grid-item">
 
         <div class="grid-title">
-          23.03.01
+          {{ item.createdDate.split('T')[0] }}
         </div>
 
         <div class="grid-tag">
-          #해결되지 않은 걱정
+          {{ item.worryTag.value }}
         </div>
 
-        <div class="grid_content">
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-        </div>
+        <div
+          v-html="item.content"
+          class="grid_content" />
 
         <div
           class="button__wrapper"
@@ -34,12 +25,6 @@
             class="basic__button"
           >
             다짐하기
-          </button>
-          <button
-            @click="_edit"
-            class="basic__button"
-          >
-            수정
           </button>
           <button
             @click="_delete"
@@ -64,6 +49,8 @@
 <script>
 import ajax from '@/wrapper/ajax'
 import sweetAlert from '@/wrapper/sweet-alert'
+import { mapState } from 'pinia'
+import { usersStore } from '@/store/users'
 
 export default {
   name: 'user-worry-board',
@@ -73,16 +60,22 @@ export default {
       pagedResult: {
         totalPages: 0,
         numberOfElements: 0,
-        content: [{}]
+        content: [{
+          content: '',
+          createdDate: '',
+          userOid: 0,
+          worryOid: 0,
+          worryTag: { code: '', value: '' }
+        }]
       }
     }
+  },
+  computed: {
+    ...mapState(usersStore, ['userCustomInfo'])
   },
   methods: {
     _dream () {
       sweetAlert.input('이 걱정을 보고 생각난 다짐을 간단히 적어주세요 :)', '다짐하기')
-    },
-    _edit () {
-      this.$router.push({ name: 'user-edit-worry' })
     },
     _delete () {
       sweetAlert.question(null, '걱정을 떠나보낼까요? 잘 해결되었길 바래요 :)', '떠나보내기', '머무르기')
@@ -91,9 +84,10 @@ export default {
       this._getPagedResults(page - 1)
     },
     _getPagedResults (page) {
-      ajax('GET', '/api/bookmark/page', null, null, {
+      ajax('GET', '/api/worry/paged', null, null, {
+        userOid: this.userCustomInfo.userOid,
         page: page,
-        size: 3
+        size: 10
       }).then(_res => {
         this.pagedResult = _res
         this.currentPage = _res.number + 1
@@ -101,6 +95,13 @@ export default {
           this._inputPage(this.currentPage - 1)
         }
       })
+    }
+  },
+  mounted () {
+    if (this.$route.params.visitedEdit !== undefined) {
+      this._inputPage(JSON.parse(this.$route.params.visitedEdit).currentPage)
+    } else {
+      this._getPagedResults()
     }
   }
 }
