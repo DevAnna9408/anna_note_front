@@ -2,35 +2,24 @@
   <div id="user-dream-board">
     <ul class="grids grid">
       <li
-        v-for="index in 10" :key="index"
+        v-for="(item, index) in pagedResult.content" :key="index"
         class="grid-item">
 
         <div class="grid-title">
-          23.03.01
+          {{ item.createdDate.split('T')[0] }}
         </div>
 
-        <div class="grid-tag">
-          #내 힘으로는 해결할 수 없는 걱정
-        </div>
-
-        <div class="grid_content">
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-          내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
+        <div
+          @click="_openModal(item.worry)"
+          class="grid_content">
+          {{ item.content }}
         </div>
 
         <div
           class="button__wrapper"
         >
           <button
-            @click="_delete"
+            @click="_delete(item)"
             class="cancel__button"
           >
             삭제
@@ -46,24 +35,60 @@
       :per-page="pagedResult.numberOfElements"
       @input="_inputPage"
     />
-  </div>
+    <modal
+      class="basic-modal"
+      v-if="showModal"
+      @close="_close">
+      <template #header>
+        <div>{{ modalForm.worryTag.value }}</div>
+      </template>
+      <template #body>
+        <div
+          v-html="modalForm.content"
+          class="grid_content">
+        </div>
+    </template>
+  </modal>
+</div>
 </template>
 
 <script>
 import ajax from '@/wrapper/ajax'
 import sweetAlert from '@/wrapper/sweet-alert'
+import { mapState } from 'pinia'
+import { usersStore } from '@/store/users'
 
 export default {
   name: 'user-dream-board',
   data () {
     return {
+      showModal: false,
       currentPage: 0,
+      modalForm: {
+        content: '',
+        worryTag: { code: '', value: '' }
+      },
       pagedResult: {
         totalPages: 0,
         numberOfElements: 0,
-        content: [{}]
+        content: [{
+          dreamOid: 0,
+          createdDate: '',
+          content: '',
+          postUserOid: 0,
+          worry: {
+            worryOid: 0,
+            content: '',
+            worryTag: { code: '', value: '' },
+            createdDate: '',
+            userOid: 0
+          }
+        }]
       }
     }
+  },
+  computed: {
+    ...mapState(usersStore, ['userCustomInfo'])
   },
   methods: {
     _delete () {
@@ -73,9 +98,10 @@ export default {
       this._getPagedResults(page - 1)
     },
     _getPagedResults (page) {
-      ajax('GET', '/api/bookmark/page', null, null, {
+      ajax('GET', '/api/dream/paged', null, null, {
+        userOid: this.userCustomInfo.userOid,
         page: page,
-        size: 3
+        size: 10
       }).then(_res => {
         this.pagedResult = _res
         this.currentPage = _res.number + 1
@@ -83,7 +109,18 @@ export default {
           this._inputPage(this.currentPage - 1)
         }
       })
+    },
+    _openModal (data) {
+      this.modalForm.content = data.content
+      this.modalForm.worryTag = data.worryTag
+      this.showModal = true
+    },
+    _close () {
+      this.showModal = false
     }
+  },
+  mounted () {
+    this._getPagedResults()
   }
 }
 </script>

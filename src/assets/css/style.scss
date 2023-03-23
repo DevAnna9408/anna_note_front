@@ -2222,6 +2222,28 @@ body {
 
 }
 
+@mixin basic-modal-setting {
+  top: 50%;
+  left: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+  border: 1px solid gray;
+  box-shadow: 10px 10px 10px grey;
+  background: #FFFFFF;
+  z-index: 999;
+}
+
+.basic-modal { // 기본 모달창의 크기
+  padding: 30px;
+  width: 80vw;
+  height: 30vh;
+  @include basic-modal-setting
+}
+
+.modal-title { // 모달 input 이름
+  width: 200px;
+}
 
 textarea:focus { outline: none; }
 button:focus { outline: none; }

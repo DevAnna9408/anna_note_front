@@ -23,7 +23,7 @@
           class="button__wrapper"
         >
           <button
-            @click="_dream"
+            @click="_dream(item)"
             class="basic__button"
           >
             다짐하기
@@ -78,10 +78,17 @@ export default {
     ...mapState(usersStore, ['userCustomInfo'])
   },
   methods: {
-    _dream () {
+    _dream (data) {
       sweetAlert.input('이 걱정을 보고 생각난 다짐을 간단히 적어주세요 :)', '다짐하기').then(con => {
         if (con.value !== undefined && String(con.value).replace(/^\s+|\s+$/g, '') !== '') {
-          console.log('asd')
+          ajax('POST', '/api/dream', {
+            content: con.value
+          }, null, {
+            userOid: this.userCustomInfo.userOid,
+            worryOid: data.worryOid
+          }).then(() => {
+            sweetAlert.noIcon('다짐이 작성되었어요 :) 다짐 노트에서 확인 해 주세요', '확인')
+          })
         }
       })
     },
