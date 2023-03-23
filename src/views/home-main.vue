@@ -59,7 +59,7 @@ export default {
     ...mapActions(usersStore, ['logout']),
     _tokenCheck () {
       if (this.userCustomInfo === undefined) this.$router.push({ name: 'user-login' })
-      else this.$router.push({ name: 'user-today-dinner' })
+      else this.$router.push({ name: 'user-worry-board' })
     }
   }
 }
