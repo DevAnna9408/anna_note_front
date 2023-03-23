@@ -29,7 +29,7 @@
             다짐하기
           </button>
           <button
-            @click="_delete"
+            @click="_delete(item)"
             class="cancel__button"
           >
             떠나보내기
@@ -37,14 +37,21 @@
         </div>
     </li>
    </ul>
-   <pagination
-      v-if="pagedResult.content.length > 0"
-      v-model="currentPage"
-      with-text
-      :page-count="pagedResult.totalPages"
-      :per-page="pagedResult.numberOfElements"
-      @input="_inputPage"
-    />
+   <div v-if="pagedResult.content.length > 0">
+     <pagination
+       v-model="currentPage"
+       with-text
+       :page-count="pagedResult.totalPages"
+       :per-page="pagedResult.numberOfElements"
+       @input="_inputPage"
+     />
+   </div>
+    <div
+      v-else
+      class="no__paged__result"
+    >
+      걱정이 하나도 없네요!
+    </div>
   </div>
 </template>
 
@@ -92,8 +99,18 @@ export default {
         }
       })
     },
-    _delete () {
-      sweetAlert.question(null, '걱정을 떠나보낼까요? 잘 해결되었길 바래요 :)', '떠나보내기', '머무르기')
+    _delete (data) {
+      sweetAlert.question(null, '걱정을 떠나보낼까요? 잘 해결되었길 바래요 :)', '떠나보내기', '머무르기').then(con => {
+        if (con.value) {
+          ajax('DELETE', '/api/worry', null, null, {
+            userOid: this.userCustomInfo.userOid,
+            worryOid: data.worryOid
+          }).then(() => {
+            sweetAlert.noIcon('걱정을 삭제했습니다 :)', '확인')
+            this._inputPage(this.currentPage)
+          })
+        }
+      })
     },
     _switchWorryTag (data) {
       const currentTag = this.worryTag.find(it => it.code === data.worryTag.code)

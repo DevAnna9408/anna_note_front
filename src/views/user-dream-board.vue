@@ -27,14 +27,21 @@
         </div>
     </li>
    </ul>
-   <pagination
-      v-if="pagedResult.content.length > 0"
-      v-model="currentPage"
-      with-text
-      :page-count="pagedResult.totalPages"
-      :per-page="pagedResult.numberOfElements"
-      @input="_inputPage"
-    />
+    <div v-if="pagedResult.content.length > 0">
+      <pagination
+        v-model="currentPage"
+        with-text
+        :page-count="pagedResult.totalPages"
+        :per-page="pagedResult.numberOfElements"
+        @input="_inputPage"
+      />
+    </div>
+    <div
+      v-else
+      class="no__paged__result"
+    >
+      걱정을 다짐으로 바꿔보세요 :)
+    </div>
     <modal
       class="basic-modal"
       v-if="showModal"
@@ -91,8 +98,18 @@ export default {
     ...mapState(usersStore, ['userCustomInfo'])
   },
   methods: {
-    _delete () {
-      sweetAlert.question(null, '다짐을 삭제할까요? 이젠 다짐하지 않아도 실천하는 사람이 되었네요 :)', '삭제', '머무르기')
+    _delete (data) {
+      sweetAlert.question(null, '다짐을 삭제할까요? 이젠 다짐하지 않아도 실천하는 사람이 되었네요 :)', '삭제', '머무르기').then(con => {
+        if (con.value) {
+          ajax('DELETE', '/api/dream', null, null, {
+            userOid: this.userCustomInfo.userOid,
+            dreamOid: data.dreamOid
+          }).then(() => {
+            sweetAlert.noIcon('다짐을 삭제했습니다 :)', '확인')
+            this._inputPage(this.currentPage)
+          })
+        }
+      })
     },
     _inputPage (page) {
       this._getPagedResults(page - 1)
