@@ -10,7 +10,7 @@
         <div class="grid_content">
           <div class="user__post__content">
             <input-textArea
-              :maxlength="'1024'"
+              :maxlength="'200'"
               :placeholder="'시도때도 없이 떠오르는 걱정을\n\n여기에 적어주세요 :)'"
               v-model="worryIn.content"
             />

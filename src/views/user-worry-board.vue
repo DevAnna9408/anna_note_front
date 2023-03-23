@@ -9,7 +9,9 @@
           {{ item.createdDate.split('T')[0] }}
         </div>
 
-        <div class="grid-tag">
+        <div
+          @click="_switchWorryTag(item)"
+          class="grid-tag">
           {{ item.worryTag.value }}
         </div>
 
@@ -51,11 +53,13 @@ import ajax from '@/wrapper/ajax'
 import sweetAlert from '@/wrapper/sweet-alert'
 import { mapState } from 'pinia'
 import { usersStore } from '@/store/users'
+import Constants from '@/Constants'
 
 export default {
   name: 'user-worry-board',
   data () {
     return {
+      worryTag: Constants.WORRY_TAG,
       currentPage: 0,
       pagedResult: {
         totalPages: 0,
@@ -79,6 +83,24 @@ export default {
     },
     _delete () {
       sweetAlert.question(null, '걱정을 떠나보낼까요? 잘 해결되었길 바래요 :)', '떠나보내기', '머무르기')
+    },
+    _switchWorryTag (data) {
+      const currentTag = this.worryTag.find(it => it.code === data.worryTag.code)
+      const currentIndex = this.worryTag.findIndex(it => it === currentTag)
+      let newValue = { code: '', value: '' }
+      if (currentIndex === 4) {
+        newValue = this.worryTag[0]
+      } else {
+        newValue = this.worryTag[currentIndex + 1]
+      }
+      ajax('PATCH', '/api/worry/tag', {
+        worryOid: data.worryOid,
+        worryTag: newValue.code
+      }, null, {
+        userOid: this.userCustomInfo.userOid
+      }).then(_res => {
+        this.pagedResult.content.find(it => it.worryOid === data.worryOid).worryTag = _res
+      })
     },
     _inputPage (page) {
       this._getPagedResults(page - 1)
