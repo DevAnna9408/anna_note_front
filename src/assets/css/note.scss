@@ -1,8 +1,11 @@
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400,700&display=swap&subset=korean");
+
 $anna-dream-color: #BCCEF8;
 $anna-dream-color-bold: #98A8F8;
 $anna-worry-color: #F5F5F5;
 
 * {
+  font-family: "Noto Sans KR", sans-serif;
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select:none;
   -moz-user-select:none;
@@ -66,6 +69,7 @@ body {
 }
 
 #home-main {
+  min-width: 210px;
   position: absolute;
   left: 50%;
   top: 50%;

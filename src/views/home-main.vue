@@ -1,5 +1,5 @@
 <template>
-  <div id="home-main" class="admin-container">
+  <div id="home-main">
     <div
       style="text-align: center;
              margin-top: 100px;
