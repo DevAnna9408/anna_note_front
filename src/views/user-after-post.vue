@@ -8,7 +8,7 @@
         </div>
 
         <div
-          v-html="postWorry.content"
+          v-html="content"
           class="grid_content">
         </div>
         <div
@@ -35,41 +35,41 @@
 <script>
 import sweetAlert from '@/wrapper/sweet-alert'
 import ajax from '@/wrapper/ajax'
+import { mapState } from 'pinia'
+import { usersStore } from '@/store/users'
 
 export default {
   name: 'user-after-post',
   data () {
     return {
-      postWorry: {
-        content: '',
-        createdDate: '',
-        userOid: 0,
-        worryOid: 0,
-        worryTag: { code: '', value: '' }
-      }
+      content: ''
     }
+  },
+  computed: {
+    ...mapState(usersStore, ['userCustomInfo'])
   },
   methods: {
     _confirm () {
-      this.$router.push({ name: 'user-worry-board' })
+      ajax('POST', '/api/worry', {
+        content: this.content.replaceAll('\n', '<br />')
+      }, null, {
+        userOid: this.userCustomInfo.userOid
+      }).then(_res => {
+        sweetAlert.noIcon('걱정을 메모했습니다 :)', '확인')
+        this.$router.push({ name: 'user-worry-board' })
+      })
     },
     _delete: function () {
       sweetAlert.question(null, '메모한 걱정을 삭제할까요? 때론 너무 사소한 걱정을 하는 것도 스트레스가 될 수 있어요 :)', '떠나보내기', '머무르기')
         .then(con => {
           if (con.value) {
-            ajax('DELETE', '/api/worry', null, null, {
-              userOid: this.postWorry.userOid,
-              worryOid: this.postWorry.worryOid
-            }).then(() => {
-              sweetAlert.noIcon('걱정을 떠나보냈습니다 :)', '확인')
-              this.$router.push({ name: 'user-add-post' })
-            })
+            this.$router.push({ name: 'user-add-post' })
           }
         })
     }
   },
   mounted () {
-    if (this.$route.params.postWorry) this.postWorry = JSON.parse(this.$route.params.postWorry)
+    if (this.$route.params.postContent) this.content = JSON.parse(this.$route.params.postContent)
     else this.$router.push({ name: 'user-add-post' })
   }
 }

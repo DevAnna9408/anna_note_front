@@ -32,9 +32,9 @@
 </template>
 
 <script>
-import ajax from '@/wrapper/ajax'
 import { mapState } from 'pinia'
 import { usersStore } from '@/store/users'
+import sweetAlert from '@/wrapper/sweet-alert'
 
 export default {
   name: 'user-add-post',
@@ -51,13 +51,8 @@ export default {
   },
   methods: {
     _post () {
-      ajax('POST', '/api/worry', {
-        content: this.worryIn.content.replaceAll('\n', '<br />')
-      }, null, {
-        userOid: this.userCustomInfo.userOid
-      }).then(_res => {
-        this.$router.push({ name: 'user-after-post', params: { postWorry: JSON.stringify(_res) } })
-      })
+      if (this.worryIn.content.replace(/^\s+|\s+$/g, '') === '') sweetAlert.noIcon('걱정이 하나도 없네요!', '확인')
+      else this.$router.push({ name: 'user-after-post', params: { postContent: JSON.stringify(this.worryIn.content) } })
     }
   }
 }

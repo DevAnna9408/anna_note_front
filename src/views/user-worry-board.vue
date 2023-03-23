@@ -79,7 +79,11 @@ export default {
   },
   methods: {
     _dream () {
-      sweetAlert.input('이 걱정을 보고 생각난 다짐을 간단히 적어주세요 :)', '다짐하기')
+      sweetAlert.input('이 걱정을 보고 생각난 다짐을 간단히 적어주세요 :)', '다짐하기').then(con => {
+        if (con.value !== undefined && String(con.value).replace(/^\s+|\s+$/g, '') !== '') {
+          console.log('asd')
+        }
+      })
     },
     _delete () {
       sweetAlert.question(null, '걱정을 떠나보낼까요? 잘 해결되었길 바래요 :)', '떠나보내기', '머무르기')
