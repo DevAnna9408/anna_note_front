@@ -3,7 +3,7 @@
 
     <div id="nav__menu" class="side__nav">
       <a class="close__btn" @click="_closeNav()">
-<!--        {{ userId }}-->
+        {{ userId }}
         &times;
       </a>
       <router-link
@@ -47,6 +47,7 @@
 import { usersStore } from '@/store/users'
 import { mapState, mapActions } from 'pinia'
 import sweetAlert from '@/wrapper/sweet-alert'
+import ajax from '@/wrapper/ajax'
 // import ajax from '@/wrapper/ajax'
 export default {
   name: 'main-navbar',
@@ -76,37 +77,26 @@ export default {
       })
     },
     _deleteUser () {
-      // sweetAlert.question(null, '회원 탈퇴 하시겠어요? 데이터가 모두 삭제됩니다.', '탈퇴하기', '아니오').then(con => {
-      //   if (con.value) {
-      //     sweetAlert.question(null, '한번만 더 생각 해 보세요. 정말 회원탈퇴 하시겠어요?', '탈퇴하기', '아니오').then(con => {
-      //       if (con.value) {
-      //         ajax('DELETE', '/api/users', null, null, {
-      //           userOid: this.userCustomInfo.userOid
-      //         }).then(() => {
-      //           this.logout()
-      //           this.$router.push({ name: 'user-login' })
-      //           sweetAlert.noIcon('모든 데이터가 삭제되었습니다. 그 동안 이용 해 주셔서 감사합니다 :)', '확인')
-      //         })
-      //       }
-      //     })
-      //   }
-      // })
+      sweetAlert.question(null, '회원 탈퇴 하시겠어요? 데이터가 모두 삭제됩니다.', '탈퇴하기', '아니오').then(con => {
+        if (con.value) {
+          sweetAlert.question(null, '한번만 더 생각 해 보세요. 정말 회원탈퇴 하시겠어요?', '탈퇴하기', '아니오').then(con => {
+            if (con.value) {
+              ajax('DELETE', '/api/users', null, null, {
+                userOid: this.userCustomInfo.userOid
+              }).then(() => {
+                this.logout()
+                this.$router.push({ name: 'user-login' })
+                sweetAlert.noIcon('모든 데이터가 삭제되었습니다. 그 동안 이용 해 주셔서 감사합니다 :)', '확인')
+              })
+            }
+          })
+        }
+      })
     }
   },
   mounted () {
     // 이렇게 해야 렌더링 할 때 콘솔창에 에러가 나지 않음.
-    // this.userId = this.userCustomInfo.userId
+    this.userId = this.userCustomInfo.userId
   }
 }
 </script>
-<style scoped lang="scss">
-.basic__background {
-  background: #FFFFFF;
-}
-.dream__background {
-  background: #BCCEF8;
-}
-.worry__background {
-  background: #F5F5F5;
-}
-</style>
