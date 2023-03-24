@@ -34,7 +34,7 @@
 
 <script>
 import sweetAlert from '@/wrapper/sweet-alert'
-import ajax from '@/wrapper/ajax'
+import { ajaxWithoutLoading } from '@/wrapper/ajax'
 import { mapState } from 'pinia'
 import { usersStore } from '@/store/users'
 
@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     _confirm () {
-      ajax('POST', '/api/worry', {
+      ajaxWithoutLoading('POST', '/api/worry', {
         content: this.content.replaceAll('\n', '<br />')
       }, null, {
         userOid: this.userCustomInfo.userOid

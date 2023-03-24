@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import ajax from '@/wrapper/ajax'
+import ajax, { ajaxWithoutLoading } from '@/wrapper/ajax'
 import sweetAlert from '@/wrapper/sweet-alert'
 import { mapState } from 'pinia'
 import { usersStore } from '@/store/users'
@@ -88,7 +88,7 @@ export default {
     _dream (data) {
       sweetAlert.input('이 걱정을 보고 생각난 다짐을 간단히 적어주세요 :)', '다짐하기').then(con => {
         if (con.value !== undefined && String(con.value).replace(/^\s+|\s+$/g, '') !== '') {
-          ajax('POST', '/api/dream', {
+          ajaxWithoutLoading('POST', '/api/dream', {
             content: con.value
           }, null, {
             userOid: this.userCustomInfo.userOid,
@@ -102,7 +102,7 @@ export default {
     _delete (data) {
       sweetAlert.question(null, '걱정을 떠나보낼까요? 잘 해결되었길 바래요 :)', '떠나보내기', '머무르기').then(con => {
         if (con.value) {
-          ajax('DELETE', '/api/worry', null, null, {
+          ajaxWithoutLoading('DELETE', '/api/worry', null, null, {
             userOid: this.userCustomInfo.userOid,
             worryOid: data.worryOid
           }).then(() => {
@@ -121,7 +121,7 @@ export default {
       } else {
         newValue = this.worryTag[currentIndex + 1]
       }
-      ajax('PATCH', '/api/worry/tag', {
+      ajaxWithoutLoading('PATCH', '/api/worry/tag', {
         worryOid: data.worryOid,
         worryTag: newValue.code
       }, null, {

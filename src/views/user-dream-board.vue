@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import ajax from '@/wrapper/ajax'
+import ajax, { ajaxWithoutLoading } from '@/wrapper/ajax'
 import sweetAlert from '@/wrapper/sweet-alert'
 import { mapState } from 'pinia'
 import { usersStore } from '@/store/users'
@@ -101,7 +101,7 @@ export default {
     _delete (data) {
       sweetAlert.question(null, '다짐을 삭제할까요? 이젠 다짐하지 않아도 실천하는 사람이 되었네요 :)', '삭제', '머무르기').then(con => {
         if (con.value) {
-          ajax('DELETE', '/api/dream', null, null, {
+          ajaxWithoutLoading('DELETE', '/api/dream', null, null, {
             userOid: this.userCustomInfo.userOid,
             dreamOid: data.dreamOid
           }).then(() => {
